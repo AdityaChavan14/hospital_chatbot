@@ -11,6 +11,9 @@ with open("hospital_data.json") as f:
 def chatbot(query):
     query = query.lower()
 
+    if any(word in query for word in ["hi", "hello", "hey"]):
+        return f"Hello! welcome to {data['name']}. How can I assist you today?"
+
     if any(word in query for word in ["location", "address", "where"]):
         return f"The hospital is located at {data['address']}"
 
@@ -26,9 +29,6 @@ def chatbot(query):
     elif any(word in query for word in ["appointment", "book"]):
         return data["appointment"]
 
-    elif any(word in query for word in ["emergency", "24"]):
-        return data["emergency"]
-
     elif any(word in query for word in ["contact", "phone"]):
         return data["contact"]
 
@@ -40,6 +40,10 @@ def chat():
      user_input = request.json["message"]
      response = chatbot(user_input)
      return jsonify({"reply": response})
+
+@app.route("/")
+def home():
+     return "Hospital Chatbot API is running"
 
 if __name__ == "__main__":
      app.run(host="0.0.0.0", port=10000)
